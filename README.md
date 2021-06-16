@@ -22,7 +22,7 @@ The assignment goes as follows:
      with   Ax=b
 So we have to compute `x` here. We do that by using the inverse of `A`:
 
-    A<sup>-1</sup>Ax=A<sup>-1</sup>b   <=>   x=bA<sup>-1</sup>
+    A-1Ax=A-1b   <=>   x=bA-1   with A-1 being the inverse of A   (AA-1=E)
 Now the catch is, that there are some "measurement errors". So we have to compute 3 different solutions:
 
 ### Assignment 53
