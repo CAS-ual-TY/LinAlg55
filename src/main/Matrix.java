@@ -105,11 +105,74 @@ public class Matrix
         return this;
     }
     
+    public Matrix inverseWithSteps()
+    {
+        Matrix inverse = new Matrix(this.size);
+        
+        for(int y = 0; y < this.size; y++)
+        {
+            for(int x = 0; x < this.size; x++)
+            {
+                inverse.matrix[y][x] = x == y ? new Fraction(1, 1) : new Fraction(0, 1);
+            }
+        }
+        
+        System.err.println();
+        this.printMatrix(System.err);
+        inverse.printMatrix(System.err);
+        System.err.println();
+        
+        Fraction factor;
+        
+        for(int i = 0; i < this.size; i++)
+        {
+            factor = this.matrix[i][i].copy().flip();
+            this.multiplyRow(i, factor);
+            inverse.multiplyRow(i, factor);
+            
+            System.err.println();
+            this.printMatrix(System.err);
+            inverse.printMatrix(System.err);
+            System.err.println();
+            
+            for(int y = 0; y < this.size; y++)
+            {
+                if(y != i)
+                {
+                    factor = this.matrix[y][i].copy();
+                    
+                    for(int j = 0; j < this.size; j++)
+                    {
+                        this.matrix[y][j].subtract((this.matrix[i][j].copy().multiply(factor))).reduce();
+                        inverse.matrix[y][j].subtract((inverse.matrix[i][j].copy().multiply(factor))).reduce();
+                    }
+                }
+            }
+            
+            System.err.println();
+            this.printMatrix(System.err);
+            inverse.printMatrix(System.err);
+            System.err.println();
+        }
+        
+        this.matrix = inverse.matrix;
+        
+        for(int y = 0; y < this.size; y++)
+        {
+            for(int x = 0; x < this.size; x++)
+            {
+                this.matrix[y][x].reduce();
+            }
+        }
+        
+        return this;
+    }
+    
     public void addRow(int y, int rowToAdd)
     {
         for(int x = 0; x < this.size; x++)
         {
-            this.matrix[y][x].add(this.matrix[rowToAdd][x]);
+            this.matrix[y][x].add(this.matrix[rowToAdd][x]).reduce();
         }
     }
     
@@ -117,7 +180,7 @@ public class Matrix
     {
         for(int x = 0; x < this.size; x++)
         {
-            this.matrix[y][x].subtract(this.matrix[rowToAdd][x]);
+            this.matrix[y][x].subtract(this.matrix[rowToAdd][x]).reduce();
         }
     }
     
@@ -125,7 +188,7 @@ public class Matrix
     {
         for(int x = 0; x < this.size; x++)
         {
-            this.matrix[y][x].multiply(factor);
+            this.matrix[y][x].multiply(factor).reduce();
         }
     }
     
@@ -133,7 +196,7 @@ public class Matrix
     {
         for(int y = 0; y < this.size; y++)
         {
-            this.matrix[y][x].add(this.matrix[y][columnToAdd]);
+            this.matrix[y][x].add(this.matrix[y][columnToAdd]).reduce();
         }
     }
     
@@ -141,7 +204,7 @@ public class Matrix
     {
         for(int y = 0; y < this.size; y++)
         {
-            this.matrix[y][x].subtract(this.matrix[y][columnToAdd]);
+            this.matrix[y][x].subtract(this.matrix[y][columnToAdd]).reduce();
         }
     }
     
@@ -149,7 +212,7 @@ public class Matrix
     {
         for(int y = 0; y < this.size; y++)
         {
-            this.matrix[y][x].multiply(factor);
+            this.matrix[y][x].multiply(factor).reduce();
         }
     }
     

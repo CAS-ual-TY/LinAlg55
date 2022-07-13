@@ -87,7 +87,7 @@ public class Main
         uA.printMatrixSimple();
         System.out.println();
         
-        uA.inverse();
+        uA.inverseWithSteps();
         
         System.out.println("Inverse of A =");
         uA.printMatrix();
